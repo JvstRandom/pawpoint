@@ -1,12 +1,14 @@
 import React, { Component, useState } from "react";
-import { View, Text, TouchableOpacity, ToastAndroid, StyleSheet, Image, ScrollView, TextInput} from "react-native";
+import { View, Text, TouchableOpacity, ToastAndroid, StyleSheet, Modal, Image, ScrollView, TextInput} from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 class Daycare extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            
+            isPopupVisibleBath: false,
+            isPopupVisibleGrooming: false,
+            isPopupVisibleManicure: false,
          };
     }
     
@@ -33,25 +35,78 @@ class Daycare extends Component {
                         <View style={styles.t4JenisDC}>
                             <TouchableOpacity 
                                 style={[styles.JenisDC, styles.borderProp]}
-
+                                onPress={() => this.setState({ isPopupVisibleBath: true })}
                             >
                                 <Image style={styles.iconJenisDC} source={require('./icon/soap-solid.png')}/>
                                 <Text style={{paddingTop: 8}}>Bath</Text>
                             </TouchableOpacity>
                             <TouchableOpacity 
                                 style={[styles.JenisDC, styles.borderProp]}
+                                onPress={() => this.setState({ isPopupVisibleGrooming: true })}
                             >
                             <Image style={styles.iconJenisDC} source={require('./icon/scissors-solid.png')}/>
                                 <Text style={{paddingTop: 8}}>Grooming</Text>
                             </TouchableOpacity>
                             <TouchableOpacity 
                                 style={[styles.JenisDC, styles.borderProp]}
+                                onPress={() => this.setState({ isPopupVisibleManicure: true })}
                             >
                             <Image style={styles.iconJenisDC} source={require('./icon/paw-solid.png')}/>
                                 <Text style={{paddingTop: 8}}>Manicure</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
+
+                    {/* Bath Modal */}
+                    <Modal
+                        visible={this.state.isPopupVisibleBath}
+                        transparent={true}
+                        animationType="fade"
+                        onRequestClose={() => this.setState({ isPopupVisibleBath: false })}
+                        style={styles.modal}
+                    >
+                        <View style={styles.popupContainer}>
+                            <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>Bath</Text>
+                            <Text>Menyediakan layanan untuk memandikan pet anda !</Text>
+                            <TouchableOpacity onPress={() => this.setState({ isPopupVisibleBath: false })} style={{justifyContent: 'center', alignItems: 'center'}}>
+                                <Text style={{ color: 'black', backgroundColor: '#C5BDF0', width: 60, height: 20, textAlign: 'center', borderRadius: 10, marginVertical: 8, borderWidth: 1 }}>Close</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
+
+                    {/* Grooming Modal */}
+                    <Modal
+                        visible={this.state.isPopupVisibleGrooming}
+                        transparent={true}
+                        animationType="fade"
+                        onRequestClose={() => this.setState({ isPopupVisibleGrooming: false })}
+                        style={styles.modal}
+                    >
+                        <View style={styles.popupContainer}>
+                            <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>Grooming</Text>
+                            <Text>Menyediakan layanan untuk Grooming pet anda !</Text>
+                            <TouchableOpacity onPress={() => this.setState({ isPopupVisibleGrooming: false })} style={{justifyContent: 'center', alignItems: 'center'}}>
+                                <Text style={{ color: 'black', backgroundColor: '#C5BDF0', width: 60, height: 20, textAlign: 'center', borderRadius: 10, marginVertical: 8, borderWidth: 1 }}>Close</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
+
+                    {/* Manicure Modal */}
+                    <Modal
+                        visible={this.state.isPopupVisibleManicure}
+                        transparent={true}
+                        animationType="fade"
+                        onRequestClose={() => this.setState({ isPopupVisibleManicure: false })}
+                        style={styles.modal}
+                    >
+                        <View style={styles.popupContainer}>
+                            <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>Manicure</Text>
+                            <Text>Menyediakan layanan untuk merawat kuku pet anda !</Text>
+                            <TouchableOpacity onPress={() => this.setState({ isPopupVisibleManicure: false })} style={{justifyContent: 'center', alignItems: 'center'}}>
+                                <Text style={{ color: 'black', backgroundColor: '#C5BDF0', width: 60, height: 20, textAlign: 'center', borderRadius: 10, marginVertical: 8, borderWidth: 1 }}>Close</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Modal>
 
                     {/* JENIS PET */}
                     <Text style={{fontSize: 25, fontWeight:'bold', color: 'black'}}>Tentang Pet Anda:</Text>
@@ -135,9 +190,9 @@ class Daycare extends Component {
                     </TouchableOpacity>
 
 
-                    <TouchableOpacity onPress={ () => this.props.navigation.goBack()}>
+                    {/* <TouchableOpacity onPress={ () => this.props.navigation.goBack()}>
                         <Text> BACK </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </ScrollView>
             </View>
         )
@@ -148,7 +203,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F9F5EC',
-        alignItems: 'center'
+        alignItems: 'center',
+        
     },
     shadowProp: {
         shadowColor: '#171717',
@@ -237,6 +293,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginHorizontal: 4
     },
+    popupContainer: {
+        backgroundColor: '#F9F5EC',
+        elevation: 6,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    modal: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
 });
 
 export default Daycare;

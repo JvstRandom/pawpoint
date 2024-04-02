@@ -90,12 +90,12 @@ class Home extends Component {
                             </View>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={ () => this.props.navigation.navigate('Daycare')}>
+                    {/* <TouchableOpacity onPress={ () => this.props.navigation.navigate('Daycare')}>
                         <Text>Pindah screen ke detail</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={ () => this.props.navigation.navigate('Nyoba')}>
                         <Text>Pindah screen ke detail</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </ScrollView>
             </View>
         )
