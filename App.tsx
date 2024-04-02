@@ -19,44 +19,17 @@ function App() {
         <Stack.Screen
           name="Home"
           component={Home}
-          options={{
-            title: 'Home',
-            headerStyle: {
-              backgroundColor: '#F9F5EC',
-            },
-            headerTintColor: '#000',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Daycare"
           component={Daycare}
-          options={{
-            title: 'Detail',
-            headerStyle: {
-              backgroundColor: '#F9F5EC',
-            },
-            headerTintColor: '#000',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Nyoba"
           component={DropdownChoice}
-          options={{
-            title: 'Detail',
-            headerStyle: {
-              backgroundColor: '#F9F5EC',
-            },
-            headerTintColor: '#000',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="SplashScreen"

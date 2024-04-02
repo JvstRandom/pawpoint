@@ -10,8 +10,22 @@ class Home extends Component {
 
     render() {
         return (
-            <ScrollView  style={[styles.container]}>
-                <View style={{marginHorizontal: 22}}>
+            <View style={styles.container}>
+                {/* Sticky Navbar */}
+                <View style={[styles.navbar, styles.shadowProp, styles.borderProp]}>
+                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Daycare')}>
+                        <Image style={styles.iconNav} source={require('./icon/pump-medical-solid.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, {backgroundColor: '#F9F5EC'}]} onPress={ () => this.props.navigation.navigate('Home')}>
+                        <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Nyoba')}>
+                        <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
+                    </TouchableOpacity>
+                </View>
+
+                {/* Scrollable Content */}
+                <ScrollView style={{marginHorizontal: 22}} showsVerticalScrollIndicator={false}>
                     {/* SAMBUTAN */}
                     <View style={[styles.sambutan, styles.shadowProp, styles.borderProp]}>
                         <View style={styles.texthello}>
@@ -59,6 +73,22 @@ class Home extends Component {
                                 <Image style={styles.panahicon} source={require('./icon/chevron-right-solid.png')}/>
                             </View>
                         </View>
+
+                        <View style={[styles.boxPenyakit, {backgroundColor: '#F1C654'}, styles.borderProp, styles.shadowProp]}>
+                            <View style={styles.deskripsiPenyakit}>
+                                <View style={styles.judulPenyakit}>
+                                    <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>Parainfluenza</Text>
+                                </View>
+                                <Text>Gejala :</Text>
+                                <Text>1. Batuk kering.</Text>
+                                <Text>2. Demam</Text>
+                                <Text>3. Bersin.</Text>
+                                <Text>4. Peradangan Mata.</Text>
+                            </View>
+                            <View style={[styles.panah, {backgroundColor: '#C5BDF0'}]}>
+                                <Image style={styles.panahicon} source={require('./icon/chevron-right-solid.png')}/>
+                            </View>
+                        </View>
                     </View>
                     <TouchableOpacity onPress={ () => this.props.navigation.navigate('Daycare')}>
                         <Text>Pindah screen ke detail</Text>
@@ -66,8 +96,8 @@ class Home extends Component {
                     <TouchableOpacity onPress={ () => this.props.navigation.navigate('Nyoba')}>
                         <Text>Pindah screen ke detail</Text>
                     </TouchableOpacity>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </View>
         )
     }
 }
@@ -76,9 +106,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F9F5EC',
+        alignItems: 'center'
     },
     sambutan: {
         marginVertical: 18,
+        marginTop: 80,
         paddingHorizontal: 10,
         paddingVertical: 10,
         paddingLeft: 20,
@@ -165,6 +197,29 @@ const styles = StyleSheet.create({
     },
     icon: {
       marginRight: 10,
+    },
+    navbar:{
+        position: 'absolute',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#C5BDF0',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        marginVertical: 14,
+        zIndex: 1,
+    },
+    iconNav: {
+        width: 20,
+        height: 25
+    },
+    iconNavt4: {
+        borderRadius: 20,
+        width: 100,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 4
     },
   });
 

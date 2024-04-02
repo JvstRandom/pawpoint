@@ -6,29 +6,47 @@ class Daycare extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            chosenDate: new Date(),
-            showDatePicker: false // to control the visibility of the date picker
+            
          };
     }
     
     render() {
-        const { chosenDate, showDatePicker } = this.state;
         return (
             <View style={styles.container}>
-                <View style={{marginHorizontal: 22}}>
+                {/* Sticky Navbar */}
+                <View style={[styles.navbar, styles.shadowProp, styles.borderProp]}>
+                    <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, {backgroundColor: '#F9F5EC'}]} onPress={ () => this.props.navigation.navigate('Daycare')}>
+                        <Image style={styles.iconNav} source={require('./icon/pump-medical-solid.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Home')}>
+                        <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Nyoba')}>
+                        <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
+                    </TouchableOpacity>
+                </View>
+
+                <ScrollView style={{marginHorizontal: 22}} showsVerticalScrollIndicator={false}>
                     {/* JENIS DAYCARE */}
                     <View>
-                        <Text style={{fontSize: 25, fontWeight:'bold', color: 'black', marginTop: 10}}>Pilih Jenis Daycare yang Ingin Dilakukan!</Text>
+                        <Text style={{fontSize: 25, fontWeight:'bold', color: 'black', marginTop: 80}}>Pilih Jenis Daycare yang Ingin Dilakukan!</Text>
                         <View style={styles.t4JenisDC}>
-                            <TouchableOpacity style={[styles.JenisDC, styles.borderProp]}>
+                            <TouchableOpacity 
+                                style={[styles.JenisDC, styles.borderProp]}
+
+                            >
                                 <Image style={styles.iconJenisDC} source={require('./icon/soap-solid.png')}/>
                                 <Text style={{paddingTop: 8}}>Bath</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.JenisDC, styles.borderProp]}>
+                            <TouchableOpacity 
+                                style={[styles.JenisDC, styles.borderProp]}
+                            >
                             <Image style={styles.iconJenisDC} source={require('./icon/scissors-solid.png')}/>
                                 <Text style={{paddingTop: 8}}>Grooming</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.JenisDC, styles.borderProp]}>
+                            <TouchableOpacity 
+                                style={[styles.JenisDC, styles.borderProp]}
+                            >
                             <Image style={styles.iconJenisDC} source={require('./icon/paw-solid.png')}/>
                                 <Text style={{paddingTop: 8}}>Manicure</Text>
                             </TouchableOpacity>
@@ -55,13 +73,42 @@ class Daycare extends Component {
                     />
 
                     {/* DATE PICK */}
-                    <View>
-                        <Text style={{fontSize: 25, fontWeight:'bold', color: 'black'}}>Pilih Tanggal:</Text>
+                    <Text style={{fontSize: 25, fontWeight:'bold', color: 'black'}}>Pilih Tanggal:</Text>
+                    <View style={styles.t4Tgl}>
+                        <View>
+                            <Text>Tanggal :</Text>
+                            <TextInput 
+                                style={[styles.input, styles.borderProp]} 
+                                // onChangeText={handleChange} 
+                                // value={inputValue} 
+                                keyboardType="numeric"
+                            />
+                        </View>
+
+                        <View>
+                            <Text>Bulan :</Text>
+                            <TextInput 
+                                style={[styles.input, styles.borderProp]}
+                                // onChangeText={handleChange} 
+                                // value={inputValue} 
+                                keyboardType="numeric"
+                            />
+                        </View>
+
+                        <View>
+                            <Text>Tahun :</Text>
+                            <TextInput 
+                                style={[styles.input, styles.borderProp]}
+                                // onChangeText={handleChange} 
+                                // value={inputValue} 
+                                keyboardType="numeric"
+                            />
+                        </View>
                         
                     </View>
 
                     {/* TIME PICKER */}
-                    <Text style={{fontSize: 25, fontWeight:'bold', color: 'black'}}>Pilih Sesi:</Text>
+                    <Text style={{fontSize: 25, fontWeight:'bold', color: 'black', marginTop: 6}}>Pilih Sesi:</Text>
                     <View style={styles.t4JenisDC}>
                         <TouchableOpacity style={[styles.sesi]}>
                             <Text style={{fontWeight: 'bold'}}>Sesi 1:</Text>
@@ -83,10 +130,15 @@ class Daycare extends Component {
                         </TouchableOpacity>
                     </View>
 
+                    <TouchableOpacity style={[styles.borderProp, styles.shadowProp, {backgroundColor: '#F47356', alignItems:'center', padding: 5, marginVertical: 10}]}>
+                        <Text style={{fontWeight: 'bold', fontSize: 20}}>Pesan Sekarang!</Text>
+                    </TouchableOpacity>
+
+
                     <TouchableOpacity onPress={ () => this.props.navigation.goBack()}>
                         <Text> BACK </Text>
                     </TouchableOpacity>
-                </View>
+                </ScrollView>
             </View>
         )
     }
@@ -96,6 +148,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F9F5EC',
+        alignItems: 'center'
     },
     shadowProp: {
         shadowColor: '#171717',
@@ -141,15 +194,48 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
 
     },
+    t4Tgl: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10
+    },
+    input: {
+        width: 100,
+        height: 40,
+        marginVertical: 6
+    },
     sesi: {
         alignItems: 'center',
         backgroundColor: '#F9F5EC',
-        width: 100,
+        width: 90,
         height: 130,
         justifyContent: 'center',
         borderColor: 'black',
         borderWidth: 2,
         borderRadius: 50,
+    },
+    navbar:{
+        position: 'absolute',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#C5BDF0',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        marginVertical: 14,
+        zIndex: 1,
+    },
+    iconNav: {
+        width: 20,
+        height: 25
+    },
+    iconNavt4: {
+        borderRadius: 20,
+        width: 100,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 4
     },
 });
 
