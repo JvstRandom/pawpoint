@@ -57,7 +57,8 @@ class Daycare extends Component {
                         </View>
                     </View>
 
-                    {/* Bath Modal */}
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        {/* Bath Modal */}
                     <Modal
                         visible={this.state.isPopupVisibleBath}
                         transparent={true}
@@ -107,6 +108,7 @@ class Daycare extends Component {
                             </TouchableOpacity>
                         </View>
                     </Modal>
+                    </View>
 
                     {/* JENIS PET */}
                     <Text style={{fontSize: 25, fontWeight:'bold', color: 'black'}}>Tentang Pet Anda:</Text>
