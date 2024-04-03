@@ -47,7 +47,7 @@ class Home extends Component {
                             </View>
                             <View style={[styles.fitur, styles.shadowProp, styles.borderProp, {backgroundColor: '#F47356'}]}>
                                 <Image source={require('./gendongKelinci.png')} style = {{width: 150, height: 150}}/>
-                                <TouchableOpacity style={styles.t4txtfitur}>
+                                <TouchableOpacity style={styles.t4txtfitur} onPress={ () => this.props.navigation.navigate('Konsul')}>
                                     <Text style={{fontSize: 17, fontWeight:'600', textAlign: 'center', color: 'black'}}>Konsultasi</Text>
                                 </TouchableOpacity>
                             </View>

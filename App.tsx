@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Home from './src/screens/Home';
 import Daycare from './src/screens/Daycare';
+import Konsul from './src/screens/Konsul';
 import SplashScreen from "./src/screens/SplashScreen";
 import DropdownChoice from "./src/screens/Nyoba";
 
@@ -29,6 +30,11 @@ function App() {
         <Stack.Screen
           name="Nyoba"
           component={DropdownChoice}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Konsul"
+          component={Konsul}
           options={{ headerShown: false }}
         />
         <Stack.Screen
