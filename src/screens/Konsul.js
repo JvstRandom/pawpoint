@@ -24,7 +24,7 @@ class Konsul extends React.Component {
                 <View style={{}}>
                 <View style={styles.imageContainer}>
                     <Image
-                        source={require('./formkonsul.jpg')} 
+                        source={require('./konsulform.jpg')} 
                         style={styles.image}
                         resizeMode="contain"
                     />
@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#F9F5EC", 
         padding: 20,
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingTop: 60,
     },
     shadowProp: {
         shadowColor: '#171717',
@@ -119,14 +120,14 @@ const styles = StyleSheet.create({
           marginHorizontal: 4
       },
     imageContainer: {
-        
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 60
+        marginTop: 15,
     },
     image: {
         width: '100%',
         height: 170,
+        
     },
     column: {
         flexDirection: 'row',
@@ -134,50 +135,51 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     form1: { 
-        borderWidth: 1.5,
+        borderWidth: 2,
         borderColor: "black",
         color: 'black',
         paddingHorizontal: 10,
         marginHorizontal: 6,
-        borderRadius: 3,
+        borderRadius: 20,
         height: 40,
         marginTop: 10,
     },
     form2: { 
         flex: 1,
-        borderWidth: 1.5,
+        borderWidth: 2,
         borderColor: "black",
         color: 'black',
         paddingHorizontal: 10,
-        borderRadius: 3,
+        borderRadius: 20,
         marginLeft: 6,
         marginRight: 4,
         height: 40,
         marginTop: 10,
     },
     form3: {
-        borderWidth: 1.5,
+        borderWidth: 2,
         borderColor: "black",
         color: 'black',
         paddingHorizontal: 10,
         paddingVertical: 10,
         marginHorizontal: 5,
-        borderRadius: 3,
-        marginTop: 10,
+        borderRadius: 20,
+        marginTop: 20,
         height: 150,
-        marginTop: 10,
     },
     Button: {
         backgroundColor: '#8FB6F1',
         paddingVertical: 10,
+        paddingHorizontal: 30,
         marginHorizontal: 60,
-        borderRadius: 3,
+        borderRadius: 10,
         marginTop: 10,
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: 20,
+        borderWidth: 2,
     },
     ButtonText: {
-        color: 'white',
+        color: 'black',
         fontWeight: 'bold',
         fontSize: 18,
     },
