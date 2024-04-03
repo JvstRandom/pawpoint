@@ -70,7 +70,7 @@ class Daycare extends Component {
                             <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>Bath</Text>
                             <Text>Menyediakan layanan untuk memandikan pet anda !</Text>
                             <TouchableOpacity onPress={() => this.setState({ isPopupVisibleBath: false })} style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <Text style={{ color: 'black', backgroundColor: '#C5BDF0', width: 60, height: 20, textAlign: 'center', borderRadius: 10, marginVertical: 8, borderWidth: 1 }}>Close</Text>
+                                <Text style={{ color: 'black', backgroundColor: '#F9F5EC', width: 60, height: 20, textAlign: 'center', borderRadius: 10, marginVertical: 8, borderWidth: 1 }}>Close</Text>
                             </TouchableOpacity>
                         </View>
                     </Modal>
@@ -87,7 +87,7 @@ class Daycare extends Component {
                             <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>Grooming</Text>
                             <Text>Menyediakan layanan untuk Grooming pet anda !</Text>
                             <TouchableOpacity onPress={() => this.setState({ isPopupVisibleGrooming: false })} style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <Text style={{ color: 'black', backgroundColor: '#C5BDF0', width: 60, height: 20, textAlign: 'center', borderRadius: 10, marginVertical: 8, borderWidth: 1 }}>Close</Text>
+                                <Text style={{ color: 'black', backgroundColor: '#F9F5EC', width: 60, height: 20, textAlign: 'center', borderRadius: 10, marginVertical: 8, borderWidth: 1 }}>Close</Text>
                             </TouchableOpacity>
                         </View>
                     </Modal>
@@ -104,7 +104,7 @@ class Daycare extends Component {
                             <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 20 }}>Manicure</Text>
                             <Text>Menyediakan layanan untuk merawat kuku pet anda !</Text>
                             <TouchableOpacity onPress={() => this.setState({ isPopupVisibleManicure: false })} style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <Text style={{ color: 'black', backgroundColor: '#C5BDF0', width: 60, height: 20, textAlign: 'center', borderRadius: 10, marginVertical: 8, borderWidth: 1 }}>Close</Text>
+                                <Text style={{ color: 'black', backgroundColor: '#F9F5EC', width: 60, height: 20, textAlign: 'center', borderRadius: 10, marginVertical: 8, borderWidth: 1 }}>Close</Text>
                             </TouchableOpacity>
                         </View>
                     </Modal>
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 4
     },
     popupContainer: {
-        backgroundColor: '#F9F5EC',
+        backgroundColor: '#C5BDF0',
         elevation: 6,
         alignItems: 'center',
         justifyContent: 'center'
