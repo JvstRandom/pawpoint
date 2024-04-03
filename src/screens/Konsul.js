@@ -21,6 +21,7 @@ class Konsul extends React.Component {
                         <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
                     </TouchableOpacity>
                 </View>
+                <View style={{}}>
                 <View style={styles.imageContainer}>
                     <Image
                         source={require('./formkonsul.jpg')} 
@@ -66,6 +67,7 @@ class Konsul extends React.Component {
                         <Text style={styles.ButtonText}>Konsultasi Sekarang</Text>
                     </TouchableOpacity>
                 </View>
+                </View>
             </View>
         );
     }
@@ -76,6 +78,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#F9F5EC", 
         padding: 20,
+        alignItems: 'center'
     },
     shadowProp: {
         shadowColor: '#171717',
