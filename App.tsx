@@ -28,11 +28,6 @@ function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Nyoba"
-          component={DropdownChoice}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name="Konsul"
           component={Konsul}
           options={{ headerShown: false }}

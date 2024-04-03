@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Image } from "react-native";
 
-class Detail extends React.Component {
+class Konsul extends React.Component {
     constructor (props) {
         super(props);
         this.state = {  };
@@ -14,10 +14,10 @@ class Detail extends React.Component {
                     <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Daycare')}>
                         <Image style={styles.iconNav} source={require('./icon/pump-medical-solid.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, {backgroundColor: '#F9F5EC'}]} onPress={ () => this.props.navigation.navigate('Home')}>
+                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Home')}>
                         <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Nyoba')}>
+                    <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, {backgroundColor: '#F9F5EC'}]} onPress={ () => this.props.navigation.navigate('Konsul')}>
                         <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
                     </TouchableOpacity>
                 </View>
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
         
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: 60
     },
     image: {
         width: '100%',
@@ -179,4 +180,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Detail;
+export default Konsul;

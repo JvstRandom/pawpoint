@@ -19,7 +19,7 @@ class Home extends Component {
                     <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, {backgroundColor: '#F9F5EC'}]} onPress={ () => this.props.navigation.navigate('Home')}>
                         <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Nyoba')}>
+                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Konsul')}>
                         <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
                     </TouchableOpacity>
                 </View>
