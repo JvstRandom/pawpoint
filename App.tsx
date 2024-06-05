@@ -5,8 +5,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Home from './src/screens/Home';
+import Login from './src/screens/Login';
+import Signup from './src/screens/Signup';
 import Daycare from './src/screens/Daycare';
-import Konsul from './src/screens/Konsul';
+import Upload from './src/screens/Upload';
 import SplashScreen from "./src/screens/SplashScreen";
 import DropdownChoice from "./src/screens/Nyoba";
 
@@ -17,6 +19,16 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen">
+      <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={Signup}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Home"
           component={Home}
@@ -28,8 +40,8 @@ function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Konsul"
-          component={Konsul}
+          name="Upload"
+          component={Upload}
           options={{ headerShown: false }}
         />
         <Stack.Screen

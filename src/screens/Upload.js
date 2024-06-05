@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Image } from "react-native";
 
-class Konsul extends React.Component {
+class Upload extends React.Component {
     constructor (props) {
         super(props);
         this.state = {  };
@@ -22,49 +22,29 @@ class Konsul extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{}}>
-                <View style={styles.imageContainer}>
-                    <Image
-                        source={require('./konsulform.jpg')} 
-                        style={styles.image}
-                        resizeMode="contain"
-                    />
-                </View>
                 <View>
                     <TextInput
                         style={styles.form1}
-                        placeholder="Masukkan nama Pet Anda"
+                        placeholder="Upload Foto Anda"
+                        textAlignVertical="top"
                     />
-                    <View style={styles.column}>
-                        <TextInput
-                            style={styles.form2}
-                            placeholder="Jenis Pet"
-                        />
-                        <TextInput
-                            style={styles.form2}
-                            placeholder="Usia Pet"
-                            keyboardType="numeric"
-                        />
-                    </View>
-                    <View style={styles.column}>
-                        <TextInput
-                            style={styles.form2}
-                            placeholder="Gender Pet"
-                        />
-                        <TextInput
-                            style={styles.form2}
-                            placeholder="Berat Pet"
-                            keyboardType="numeric"
-                        />
-                    </View>
+                    <TextInput
+                        style={styles.form2}
+                        placeholder="Lokasi"
+                    />
+                    <TextInput
+                        style={styles.form2}
+                        placeholder="Tags"
+                    />
                     <TextInput
                         style={styles.form3}
-                        placeholder="Keluhan"
+                        placeholder="Caption"
                         multiline={true}
                         numberOfLines={4}
                         textAlignVertical="top"
                     />
                     <TouchableOpacity style={styles.Button}>
-                        <Text style={styles.ButtonText}>Konsultasi Sekarang</Text>
+                        <Text style={styles.ButtonText}>Upload Foto Sekarang</Text>
                     </TouchableOpacity>
                 </View>
                 </View>
@@ -127,12 +107,6 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: 170,
-        
-    },
-    column: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 10,
     },
     form1: { 
         borderWidth: 2,
@@ -141,20 +115,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         marginHorizontal: 6,
         borderRadius: 20,
-        height: 40,
-        marginTop: 10,
+        height: 150,
+        marginTop: 50,
     },
     form2: { 
-        flex: 1,
         borderWidth: 2,
         borderColor: "black",
         color: 'black',
         paddingHorizontal: 10,
+        marginHorizontal: 6,
         borderRadius: 20,
-        marginLeft: 6,
-        marginRight: 4,
-        height: 40,
-        marginTop: 10,
+        height: 55,
+        marginTop: 20,
     },
     form3: {
         borderWidth: 2,
@@ -185,4 +157,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Konsul;
+export default Upload;
