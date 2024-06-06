@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, ToastAndroid, StyleSheet, Image, ScrollView, Dimensions} from "react-native";
+import { View, Text, TouchableOpacity, ToastAndroid, StyleSheet, Image, ScrollView, Button, Dimensions} from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
-class Home extends Component {
-
+class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = { };
@@ -12,48 +11,43 @@ class Home extends Component {
     render() {
         const screenWidth = Dimensions.get('window').width;
         const screenHeight = Dimensions.get('window').height;
-
+        
         return (
             <View style={styles.container}>
                 {/* Sticky Navbar */}
                 <View style={[styles.navbar, styles.shadowProp, styles.borderProp]}>
-                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Profile')}>
+                    <TouchableOpacity style={[styles.iconNavt4, , styles.borderProp, {backgroundColor: '#F9F5EC'}]} onPress={ () => this.props.navigation.navigate('Daycare')}>
                         <Image style={styles.iconNav} source={require('./icon/pump-medical-solid.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, {backgroundColor: '#F9F5EC'}]} onPress={ () => this.props.navigation.navigate('Home')}>
+                    <TouchableOpacity style={[styles.iconNavt4]} onPress={ () => this.props.navigation.navigate('Home')}>
                         <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Upload')}>
+                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Konsul')}>
                         <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
                     </TouchableOpacity>
+                </View>
+
+                <View style={{marginTop: 80, alignItems: 'center'}}>
+                    <Image source={require('../asset/dogdipantai.jpeg')} style ={{width: screenWidth/3, height: screenWidth/3, borderRadius: 100}}/>
+                    <Text style={{fontSize: 20, fontWeight:'bold', marginVertical: 10}}>DogLovers</Text>
+                    <View style={[styles.kotakPengisiKonten, styles.borderProp, {paddingHorizontal: 16}]}>
+                        <Text style={{fontSize: 16, fontWeight:'bold'}}>Upload Foto</Text>
+                    </View>
                 </View>
 
                 {/* Scrollable Content */}
                 <ScrollView style={{marginHorizontal: 22}} showsVerticalScrollIndicator={false}>
                     {/* POST */}
-                    <View style={[styles.post, styles.shadowProp, styles.borderProp]}>
-                        <View style={styles.texttime}>
-                            <Text style={{fontSize: 10, fontWeight:'bold'}}>10:30</Text>
-                            <Text style={{fontSize: 10, fontWeight:'bold'}}>21 Juni 2024</Text>
+                    <View style={styles.t4fitur}>
+                        <View style={[styles.post, styles.borderProp, {borderWidth: 1, borderRadius: 0}]}>
+                            <Text style={{fontSize: 10, fontWeight:'bold'}}>21 Juni 2024 / 10:30</Text>
+
+                            <Image source={require('../asset/dogdipantai.jpeg')} style = {{width: (screenWidth-85)/2, height:200 }}></Image>
                         </View>
+                        <View style={[styles.post, styles.borderProp, {borderWidth: 1, borderRadius: 0}]}>
+                            <Text style={{fontSize: 10, fontWeight:'bold'}}>21 Juni 2024 / 10:30</Text>
 
-                        <Image source={require('../asset/dogdipantai.jpeg')} style = {{width: screenWidth-85, height:200, borderRadius: 12, }}></Image>
-
-                        <View style={[styles.t4fitur, {justifyContent: 'space-evenly', marginTop: 12}]}>
-                            <Image source={require('../asset/dogdipantai.jpeg')} style = {{width: screenWidth/8, height: screenWidth/8, borderRadius: 50}}/>
-                            <View>
-                                <Text style={{fontSize: 18, fontWeight:'bold', marginBottom: 2}}>DogLovers</Text>
-                                <Text>"Anjingku bisa bersantai disini!"</Text>
-                            </View>
-                        </View>
-
-                        <View style={[styles.t4fitur, {marginTop: 16}]}>
-                            <View style={styles.kotakPengisiKonten}>
-                                <Text>#beach</Text>
-                            </View>
-                            <View style={[styles.kotakPengisiKonten, {backgroundColor: '#8FB6F1'}]}>
-                                <Text>Pantai Madura Surabaya</Text>
-                            </View>
+                            <Image source={require('../asset/dogdipantai.jpeg')} style = {{width: (screenWidth-85)/2, height:200, }}></Image>
                         </View>
                     </View>
 
@@ -71,9 +65,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     post: {
-        marginTop: 80,
-        paddingHorizontal: 15,
-        paddingVertical: 12,
+        marginTop: 20,
+        paddingHorizontal: 8,
+        paddingVertical: 10,
         backgroundColor: '#F9F5EC',
         justifyContent: 'center'
     },
@@ -100,6 +94,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
+
     },
     fitur: {
         marginVertical: 12,
@@ -187,4 +182,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default Home;
+export default Profile;
