@@ -11,6 +11,7 @@ import Daycare from './src/screens/Daycare';
 import Upload from './src/screens/Upload';
 import SplashScreen from "./src/screens/SplashScreen";
 import Profile from "./src/screens/Profile";
+import Lokasi from './src/screens/Lokasi';
 import DropdownChoice from "./src/screens/Nyoba";
 
 const Stack = createNativeStackNavigator();
@@ -43,6 +44,11 @@ function App() {
         <Stack.Screen
           name="Upload"
           component={Upload}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Lokasi"
+          component={Lokasi}
           options={{ headerShown: false }}
         />
         <Stack.Screen

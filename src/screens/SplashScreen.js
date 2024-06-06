@@ -18,7 +18,7 @@ class SplashScreen extends Component {
         return (
             <View style={styles.container}>
                 <Image
-                    source={require('./logo.jpg')} 
+                    source={require('./logoo.jpg')} 
                     style={styles.image}
                     resizeMode="contain"
                 />
