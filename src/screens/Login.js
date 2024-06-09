@@ -1,61 +1,90 @@
-import React, { Component } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from "react-native";
+import { supabase } from "../../lib/supabase";
+import { Input } from 'react-native-elements';
 
-class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { };
+const Login = ({ navigation }) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    async function signInWithEmail() {
+        setLoading(true);
+        const { error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
+
+        setLoading(false);
+
+        if (error) {
+            Alert.alert(error.message);
+        } else {
+            navigation.navigate('Home'); // Redirect to Home on successful login
+        }
+        
     }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                {/* Sticky Navbar */}
-                <View style={[styles.navbar, styles.shadowProp, styles.borderProp]}>
-                    <TouchableOpacity style={styles.iconNavt4} onPress={() => this.props.navigation.navigate('Daycare')}>
-                        <Image style={styles.iconNav} source={require('./icon/pump-medical-solid.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, { backgroundColor: '#F9F5EC' }]} onPress={() => this.props.navigation.navigate('Login')}>
-                        <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconNavt4} onPress={() => this.props.navigation.navigate('Konsul')}>
-                        <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
-                    </TouchableOpacity>
-                </View>
+    async function signUpWithEmail() {
+        setLoading(true);
+        const { data: { session }, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+        });
 
-                {/* SAMBUTAN */}
-                <View style={[styles.sambutan, styles.shadowProp, styles.borderProp]}>
-                    <View style={styles.texthello}>
-                        <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Selamat</Text>
-                        <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Datang</Text>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 10 }}>di Meaps!</Text>
-                    </View>
-                    <Image source={require('./cat.png')} style={{ width: 200, height: 200 }} />
-                </View>
+        if (error) Alert.alert(error.message);
+        if (!session) Alert.alert("Please check your inbox for email verification!");
+        setLoading(false);
+    }
 
-                <View style={styles.formContainer}>
-                    <TextInput
-                        style={styles.form1}
-                        placeholder="Masukkan email Anda..."
-                    />
-                    <TextInput
-                        style={styles.form2}
-                        placeholder="Masukkan password Anda..."
-                    />
-                    <TouchableOpacity style={styles.Button}>
-                        <Text style={styles.ButtonText}>Login Sekarang</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Signup')}>
-                        <Text style={styles.signupText}>
-                            Belum mempunyai akun? <Text style={styles.signupLink}>Signup</Text>
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+    return (
+        <View style={styles.container}>
 
+            {/* SAMBUTAN */}
+            <View style={[styles.sambutan, styles.shadowProp, styles.borderProp]}>
+                <View style={styles.texthello}>
+                    <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Selamat</Text>
+                    <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Datang</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 10 }}>di Meaps!</Text>
+                </View>
+                <Image source={require('./cat.png')} style={{ width: 200, height: 200 }} />
             </View>
-        )
-    }
-}
+
+            <View style={styles.formContainer}>
+                <Input
+                    
+                    label="Email"
+                    leftIcon={{ type: "font-awesome", name: "envelope" }}
+                    onChangeText={(text) => setEmail(text)}
+                    value={email}
+                    placeholder="Masukkan email Anda..."
+                    autoCapitalize={"none"}
+                />
+                <Input
+                    
+                    label="Password"
+                    leftIcon={{ type: "font-awesome", name: "lock" }}
+                    onChangeText={(text) => setPassword(text)}
+                    value={password}
+                    secureTextEntry={true}
+                    autoCapitalize={"none"}
+                    placeholder="Masukkan password Anda..."
+                />
+                <TouchableOpacity style={styles.Button} onPress={signInWithEmail} disabled={loading}>
+                    <Text style={styles.ButtonText}>Login Sekarang</Text>
+                </TouchableOpacity>
+
+                <Text style={styles.signupText}>
+                    Belum mempunyai akun?
+                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                        <Text style={styles.signupLink}> Signup</Text>
+                    </TouchableOpacity>
+                </Text>
+            </View>
+
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -68,7 +97,7 @@ const styles = StyleSheet.create({
     sambutan: {
         width: '90%',
         marginVertical: 18,
-        marginTop: 120,
+        marginTop: 80,
         paddingHorizontal: 10,
         paddingVertical: 10,
         paddingLeft: 20,
@@ -88,32 +117,6 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderWidth: 2,
         borderRadius: 20,
-    },
-    icon: {
-        marginRight: 10,
-    },
-    navbar: {
-        position: 'absolute',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#C5BDF0',
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        marginVertical: 14,
-        zIndex: 1,
-    },
-    iconNav: {
-        width: 20,
-        height: 25
-    },
-    iconNavt4: {
-        borderRadius: 20,
-        width: 100,
-        height: 40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginHorizontal: 4
     },
     formContainer: {
         width: '90%',
@@ -166,4 +169,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Home;
+export default Login;

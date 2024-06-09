@@ -1,60 +1,109 @@
-import React, { Component } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Alert, TextInput, Image } from "react-native";
+import { supabase } from "../../lib/supabase";
 
-class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { };
-    }
+const Signup = ({ navigation }) => {
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [retryCount, setRetryCount] = useState(0);
 
-    render() {
-        return (
-            <View style={styles.container}>
-                {/* Sticky Navbar */}
-                <View style={[styles.navbar, styles.shadowProp, styles.borderProp]}>
-                    <TouchableOpacity style={styles.iconNavt4} onPress={() => this.props.navigation.navigate('Daycare')}>
-                        <Image style={styles.iconNav} source={require('./icon/pump-medical-solid.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, { backgroundColor: '#F9F5EC' }]} onPress={() => this.props.navigation.navigate('Signup')}>
-                        <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconNavt4} onPress={() => this.props.navigation.navigate('Konsul')}>
-                        <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
-                    </TouchableOpacity>
+    const maxRetries = 5;
+    const delayRef = useRef(1000); // Initial delay of 1 second
+
+    const resetRateLimit = () => {
+        setRetryCount(0);
+        delayRef.current = 1000;
+    };
+
+    const signUpWithEmail = async () => {
+        if (loading) return;
+
+        setLoading(true);
+        const { data: { session }, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+        }, {
+            data: {
+                full_name: username, // Map username to full_name
+            }
+        });
+
+        if (error) {
+            if (error.message.includes("rate limit")) {
+                if (retryCount < maxRetries) {
+                    Alert.alert(`Rate limit exceeded, retrying in ${delayRef.current / 1000} seconds...`);
+                    setTimeout(() => {
+                        setRetryCount(retryCount + 1);
+                        delayRef.current *= 2; // Exponential backoff
+                        signUpWithEmail(); // Retry signup
+                    }, delayRef.current);
+                } else {
+                    Alert.alert("Rate limit exceeded, please try again later.");
+                    resetRateLimit();
+                }
+            } else {
+                Alert.alert(error.message);
+                resetRateLimit();
+            }
+        } else {
+            Alert.alert("Please check your inbox for email verification!");
+            resetRateLimit();
+        }
+
+        setLoading(false);
+    };
+
+    return (
+        <View style={styles.container}>
+            {/* SAMBUTAN */}
+            <View style={[styles.sambutan, styles.shadowProp, styles.borderProp]}>
+                <View style={styles.texthello}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Masukkan</Text>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold' }}>Informasi</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 10 }}>Anda!</Text>
                 </View>
-
-                {/* SAMBUTAN */}
-                <View style={[styles.sambutan, styles.shadowProp, styles.borderProp]}>
-                    <View style={styles.texthello}>
-                        <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Masukkan</Text>
-                        <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Informasi</Text>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 10 }}>Anda!</Text>
-                    </View>
-                    <Image source={require('./cat.png')} style={{ width: 200, height: 200 }} />
-                </View>
-
-                <View style={styles.formContainer}>
-                    <TextInput
-                        style={styles.form1}
-                        placeholder="Masukkan email Anda..."
-                    />
-                    <TextInput
-                        style={styles.form1}
-                        placeholder="Masukkan username Anda..."
-                    />
-                    <TextInput
-                        style={styles.form2}
-                        placeholder="Masukkan password Anda..."
-                    />
-                    <TouchableOpacity style={styles.Button}>
-                        <Text style={styles.ButtonText}>SignUp Sekarang</Text>
-                    </TouchableOpacity>
-                </View>
-
+                <Image source={require('./cat.png')} style={{ width: 200, height: 200 }} />
             </View>
-        )
-    }
-}
+
+            <View style={styles.formContainer}>
+                {/* <TextInput
+                    style={styles.form1}
+                    placeholder="Masukkan username Anda..."
+                    onChangeText={(text) => setUsername(text)}
+                    value={username}
+                    autoCapitalize={"none"}
+                /> */}
+                <TextInput
+                    style={styles.form1}
+                    placeholder="Masukkan email Anda..."
+                    onChangeText={(text) => setEmail(text)}
+                    value={email}
+                    autoCapitalize={"none"}
+                />
+                <TextInput
+                    style={styles.form2}
+                    placeholder="Masukkan password Anda..."
+                    onChangeText={(text) => setPassword(text)}
+                    value={password}
+                    secureTextEntry={true}
+                    autoCapitalize={"none"}
+                />
+                <TouchableOpacity style={styles.Button} onPress={signUpWithEmail} disabled={loading}>
+                    <Text style={styles.ButtonText}>Daftar Sekarang</Text>
+                </TouchableOpacity>
+
+                <Text style={styles.signupText}>
+                    Sudah mempunyai akun?
+                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                        <Text style={styles.signupLink}> Login</Text>
+                    </TouchableOpacity>
+                </Text>
+            </View>
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -67,7 +116,7 @@ const styles = StyleSheet.create({
     sambutan: {
         width: '90%',
         marginVertical: 18,
-        marginTop: 120,
+        marginTop: 80,
         paddingHorizontal: 10,
         paddingVertical: 10,
         paddingLeft: 20,
@@ -87,32 +136,6 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderWidth: 2,
         borderRadius: 20,
-    },
-    icon: {
-        marginRight: 10,
-    },
-    navbar: {
-        position: 'absolute',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#C5BDF0',
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        marginVertical: 14,
-        zIndex: 1,
-    },
-    iconNav: {
-        width: 20,
-        height: 25
-    },
-    iconNavt4: {
-        borderRadius: 20,
-        width: 100,
-        height: 40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginHorizontal: 4
     },
     formContainer: {
         width: '90%',
@@ -139,8 +162,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         height: 55,
         marginTop: 20,
-        fontSize: 16,
-        marginBottom: 20
+        fontSize: 16
     },
     Button: {
         backgroundColor: '#8FB6F1',
@@ -148,14 +170,22 @@ const styles = StyleSheet.create({
         paddingHorizontal: 40,
         borderRadius: 10,
         alignItems: 'center',
-        marginTop: 20,
         borderWidth: 2,
+        marginTop: 25
     },
     ButtonText: {
         color: 'black',
         fontWeight: 'bold',
         fontSize: 18,
     },
+    signupText: {
+        fontSize: 16,
+        marginTop: 10,
+    },
+    signupLink: {
+        color: '#F47356',
+        textDecorationLine: 'underline',
+    }
 });
 
-export default Home;
+export default Signup;
