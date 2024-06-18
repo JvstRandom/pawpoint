@@ -1,26 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TouchableOpacity, Alert, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
 import { supabase } from '../../lib/supabase';
 import { Session } from '@supabase/supabase-js';
 import PropTypes from 'prop-types';
 import { Input, Button } from '@rneui/themed';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { NavigationProp } from '@react-navigation/native';
+import { useFocusEffect, NavigationProp } from '@react-navigation/native';
 
 type ProfileProps = {
-  session : Session,
+  session: Session,
   navigation: NavigationProp<any>
 }
+
+type Post = {
+  id: number;
+  user_id: string;
+  photo_url: string;
+  caption?: string;
+  location_id?: number;
+  created_at: string;
+};
 
 export default function Profile({ session, navigation }: ProfileProps) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState('');
   const [website, setWebsite] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
+  const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    if (session) getProfile();
+    if (session) {
+      getProfile();
+      getUserPosts();
+    }
   }, [session]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (session) {
+        getProfile();
+      }
+    }, [session])
+  );
 
   async function getProfile() {
     try {
@@ -29,7 +49,7 @@ export default function Profile({ session, navigation }: ProfileProps) {
 
       const { data, error, status } = await supabase
         .from('profiles')
-        .select(`username, website, avatar_url`)
+        .select('*')
         .eq('id', session?.user.id)
         .single();
 
@@ -51,21 +71,45 @@ export default function Profile({ session, navigation }: ProfileProps) {
     }
   }
 
+  async function getUserPosts() {
+    try {
+      setLoading(true);
+      if (!session?.user) throw new Error('No user on the session!');
+
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('user_id', session?.user.id);
+
+      if (error) {
+        throw error;
+      }
+
+      setPosts(data);
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function updateProfile({ username, website, avatarUrl }: { username: string; website: string; avatarUrl: string }) {
     try {
       setLoading(true);
       if (!session?.user) throw new Error('No user on the session!');
-  
+
       const updates = {
         id: session?.user.id,
         username,
         website,
-        avatar_url: avatarUrl, // Corrected variable name
+        avatar_url: avatarUrl,
         updated_at: new Date(),
       };
-  
+
       const { error } = await supabase.from('profiles').upsert(updates);
-  
+
       if (error) {
         throw error;
       }
@@ -77,7 +121,7 @@ export default function Profile({ session, navigation }: ProfileProps) {
       setLoading(false);
     }
   }
-  
+
   const screenWidth = Dimensions.get('window').width;
 
   return (
@@ -96,29 +140,36 @@ export default function Profile({ session, navigation }: ProfileProps) {
       </View>
 
       <View style={{ marginTop: 80, alignItems: 'center' }}>
-        <Image source={require('../asset/dogdipantai.jpeg')} style={{ width: screenWidth / 3, height: screenWidth / 3, borderRadius: 100 }} />
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginVertical: 10 }}>DogLovers</Text>
-        <View style={[styles.kotakPengisiKonten, styles.borderProp, { paddingHorizontal: 16 }]}>
-          <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Upload Foto</Text>
+      <Image
+          source={avatarUrl ? { uri: avatarUrl } : require('../asset/profileDefault1.jpg')}
+          style={[
+              styles.avatar,
+              !avatarUrl && { backgroundColor: '#E4E4E7', alignItems: 'center', justifyContent: 'center' }
+          ]}
+      />
+        <Text style={{ fontSize: 20, fontWeight: 'bold', marginVertical: 10 }}>{username}</Text>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 12}}>
+          <TouchableOpacity style={[styles.kotakPengisiKonten, styles.borderProp, { paddingHorizontal: 16 }]} onPress={() => navigation.navigate('Upload', { userId: session.user.id })}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Upload Foto</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.kotakPengisiKonten, styles.borderProp, { paddingHorizontal: 16, backgroundColor: "#F47356" }]} onPress={() => navigation.navigate('EditProfile', { userId: session.user.id })}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Edit Profile</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
       {/* Scrollable Content */}
       <ScrollView style={{ marginHorizontal: 22 }} showsVerticalScrollIndicator={false}>
-        {/* POST */}
         <View style={styles.t4fitur}>
-          <View style={[styles.post, styles.borderProp, { borderWidth: 1, borderRadius: 0 }]}>
-            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>21 Juni 2024 / 10:30</Text>
-            <Image source={require('../asset/dogdipantai.jpeg')} style={{ width: (screenWidth - 85) / 2, height: 200 }} />
-          </View>
-          <View style={[styles.post, styles.borderProp, { borderWidth: 1, borderRadius: 0 }]}>
-            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>21 Juni 2024 / 10:30</Text>
-            <Image source={require('../asset/dogdipantai.jpeg')} style={{ width: (screenWidth - 85) / 2, height: 200 }} />
-          </View>
+          {posts.map((post) => (
+            <View key={post.id} style={[styles.post, styles.borderProp, { borderWidth: 1}]}>
+              <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{new Date(post.created_at).toLocaleString()}</Text>
+              <Image source={{ uri: post.photo_url }} style={{ width: (screenWidth - 85) / 2, height: 200 }} />
+              <Text>"{post.caption}"</Text>
+            </View>
+          ))}
         </View>
       </ScrollView>
-
-      
     </View>
   );
 }
@@ -250,4 +301,10 @@ const styles = StyleSheet.create({
   mt20: {
     marginTop: 20,
   },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginTop: 20
+},
 });

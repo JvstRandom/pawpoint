@@ -1,10 +1,8 @@
-import React, { Component, useState } from "react";
-import { View, Text, TouchableOpacity, ToastAndroid, StyleSheet, Image, ScrollView, Dimensions, Modal, TextInput, KeyboardAvoidingView, Platform} from "react-native";
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import React, { Component } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView, Dimensions, Modal, TextInput, KeyboardAvoidingView, Platform } from "react-native";
 import { supabase } from "../../lib/supabase";
 
 class Home extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -24,25 +22,19 @@ class Home extends Component {
     fetchPosts = async () => {
         const { data: posts, error } = await supabase
             .from('posts')
-            .select(`
-                *,
-                profiles:user_id (id, username, avatar_url),
-                locations:location_id (id, name)
-            `)
+            .select('*, profiles(*), locations(*)')
             .order('created_at', { ascending: false });
-    
         if (error) {
             console.error(error);
         } else {
             this.setState({ posts });
         }
     };
-    
 
     fetchComments = async (postId) => {
         const { data: comments, error } = await supabase
             .from('comments')
-            .select(`*, profiles:user_id (id, username, avatar_url)`)
+            .select('*')
             .eq('post_id', postId);
         if (error) {
             console.error(error);
@@ -50,7 +42,7 @@ class Home extends Component {
             this.setState({ comments, commentsModalVisible: true });
         }
     };
-    
+
     toggleCommentsModal = (postId = null) => {
         if (postId) {
             this.fetchComments(postId);
@@ -67,29 +59,20 @@ class Home extends Component {
     addComment = async () => {
         const { newComment, selectedPost } = this.state;
         if (newComment.trim() !== '') {
-            try {
-                // Get the current user from supabase
-                const user = await supabase.auth.getUser();
-    
-                const { data, error } = await supabase
-                    .from('comments')
-                    .insert([{ content: newComment, post_id: selectedPost, user_id: user.data.user.id }])
-                    .select();
-    
-                if (error) {
-                    console.error(error);
-                } else {
-                    this.setState((prevState) => ({
-                        comments: [...prevState.comments, ...data],
-                        newComment: ''
-                    }));
-                }
-            } catch (error) {
+            const { data, error } = await supabase
+                .from('comments')
+                .insert([{ content: newComment, post_id: selectedPost, user_id: 'YOUR_USER_ID' }])
+                .select();
+            if (error) {
                 console.error(error);
+            } else {
+                this.setState((prevState) => ({
+                    comments: [...prevState.comments, ...data],
+                    newComment: ''
+                }));
             }
         }
     };
-    
 
     render() {
         const screenWidth = Dimensions.get('window').width;
@@ -99,20 +82,19 @@ class Home extends Component {
             <View style={styles.container}>
                 {/* Sticky Navbar */}
                 <View style={[styles.navbar, styles.shadowProp, styles.borderProp]}>
-                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Profile')}>
+                    <TouchableOpacity style={styles.iconNavt4} onPress={() => this.props.navigation.navigate('Profile')}>
                         <Image style={styles.iconNav} source={require('./icon/pump-medical-solid.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, {backgroundColor: '#F9F5EC'}]} onPress={ () => this.props.navigation.navigate('Home')}>
+                    <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, { backgroundColor: '#F9F5EC' }]} onPress={() => this.props.navigation.navigate('Home')}>
                         <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Lokasi')}>
+                    <TouchableOpacity style={styles.iconNavt4} onPress={() => this.props.navigation.navigate('Upload')}>
                         <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
                     </TouchableOpacity>
                 </View>
 
                 {/* Scrollable Content */}
-                <ScrollView style={{marginHorizontal: 22}} showsVerticalScrollIndicator={false}>
-                    {/* POST */}
+                <ScrollView style={{ marginHorizontal: 22 }} showsVerticalScrollIndicator={false}>
                     {posts.map((post) => (
                         <View key={post.id} style={[styles.post, styles.shadowProp, styles.borderProp]}>
                             <View style={styles.texttime}>
@@ -122,15 +104,10 @@ class Home extends Component {
 
                             <Image source={{ uri: post.photo_url }} style={{ width: screenWidth - 85, height: 200, borderRadius: 12 }} />
 
-                            {/* Username and caption */}
-                            <View style={[styles.t4fitur, { justifyContent: 'flex-start', marginTop: 12, gap: 10, marginLeft: 20}]}>
-                                {post.profiles && (
-                                    <Image source={{ uri: post.profiles.avatar_url }} style={{ width: screenWidth / 8, height: screenWidth / 8, borderRadius: 50 }} />
-                                )}
+                            <View style={[styles.t4fitur, { justifyContent: 'space-evenly', marginTop: 12 }]}>
+                                <Image source={{ uri: post.profiles.avatar_url }} style={{ width: screenWidth / 8, height: screenWidth / 8, borderRadius: 50 }} />
                                 <View>
-                                    {post.profiles && (
-                                        <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 2 }}>{post.profiles.username}</Text>
-                                    )}
+                                    <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 2 }}>{post.profiles.username}</Text>
                                     <Text>{post.caption}</Text>
                                 </View>
                             </View>
@@ -139,34 +116,31 @@ class Home extends Component {
                                 <Text>Add a comment..</Text>
                             </TouchableOpacity>
 
-                            {/* Type Tag and Location */}
                             <View style={[styles.t4fitur, { marginTop: 16 }]}>
                                 <View style={styles.kotakPengisiKonten}>
                                     <Text>{post.type_tag}</Text>
                                 </View>
                                 <View style={[styles.kotakPengisiKonten, { backgroundColor: '#8FB6F1' }]}>
-                                    {post.locations && (
-                                        <Text>{post.locations.name}</Text>
-                                    )}
+                                    <Text>{post.locations.name}</Text>
                                 </View>
                             </View>
                         </View>
                     ))}
                 </ScrollView>
 
-                {/* Modal */}
+                {/* Comments Modal */}
                 <Modal
                     animationType="slide"
                     transparent={true}
                     visible={commentsModalVisible}
                     onRequestClose={() => this.toggleCommentsModal()}
                 >
-                    <KeyboardAvoidingView behavior="padding" style={styles.modalContainer}>
+                    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.modalContainer}>
                         <View style={styles.modalView}>
                             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                                 <Text style={styles.modalText}>Comments</Text>
                                 {comments.map((comment, index) => (
-                                    <Text key={index} style={styles.scrollText}>{comment.profiles.username} : {comment.content}</Text>
+                                    <Text key={index} style={styles.scrollText}>{comment.content}</Text>
                                 ))}
                             </ScrollView>
                             <TextInput
@@ -185,10 +159,9 @@ class Home extends Component {
                             </View>
                         </View>
                     </KeyboardAvoidingView>
-                </Modal>  
-
+                </Modal>
             </View>
-        )
+        );
     }
 }
 
@@ -207,7 +180,7 @@ const styles = StyleSheet.create({
     },
     shadowProp: {
         shadowColor: '#171717',
-        shadowOffset: {width: -12, height: 19},
+        shadowOffset: { width: -12, height: 19 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 20
@@ -222,119 +195,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 3
-
     },
     t4fitur: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
-    },
-    fitur: {
-        marginVertical: 12,
-        paddingVertical: 8,
-        paddingHorizontal: 4,
-    },
-    t4txtfitur: {
-        paddingHorizontal: 4,
-        paddingVertical: 5,
-        marginHorizontal: 6,
-        backgroundColor: '#F9F5EC',
-        borderColor: 'black',
-        borderWidth: 1.4,
-        borderRadius: 10,
-        justifyContent: 'center',
-        
-    },
-    
-    kotakPengisiKonten: {
-        backgroundColor: '#F1C654',
-        borderRadius: 18,
-        paddingVertical: 4,
-        paddingHorizontal: 10
-    },
-    title: {
-      fontSize: 20,
-      fontWeight: 'bold',
-    },
-    icon: {
-      marginRight: 10,
-    },
-    navbar:{
-        position: 'absolute',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#C5BDF0',
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        marginVertical: 14,
-        zIndex: 1,
-    },
-    iconNav: {
-        width: 20,
-        height: 25
-    },
-    iconNavt4: {
-        borderRadius: 20,
-        width: 100,
-        height: 40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginHorizontal: 4
-    },
-    comment: {
-        padding: 6,
-        paddingHorizontal: 10,
-        marginTop: 15,
-    },
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    scrollViewContent: {
-        alignItems: 'center',
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: 'center',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    scrollText: {
-        marginVertical: 10,
-        fontSize: 16,
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        borderRadius: 5,
-        width: '100%',
-        paddingHorizontal: 10,
-        marginBottom: 15,
-    },
-    buttonText: {
-        color: 'black',
-        fontSize: 16,
-        padding: 6
-    }
-  });
-
-export default Home;

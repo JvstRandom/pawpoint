@@ -5,10 +5,11 @@ import { supabase } from "./lib/supabase";
 import Home from './src/screens/Home';
 import Login from './src/screens/Login';
 import Signup from './src/screens/Signup';
-import Daycare from './src/screens/Daycare';
+import Lokasi from './src/screens/Lokasi';
 import Upload from './src/screens/Upload';
 import SplashScreen from "./src/screens/SplashScreen";
 import Profile from "./src/screens/Profile";
+import EditProfile from "./src/screens/EditProfile";
 import DropdownChoice from "./src/screens/Nyoba";
 import { Session } from "@supabase/supabase-js";
 
@@ -45,6 +46,11 @@ function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
+              name="Lokasi"
+              component={Lokasi}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="SplashScreen"
               component={SplashScreen}
               options={{ headerShown: false }}
@@ -54,9 +60,19 @@ function App() {
               component={Login}
               options={{ headerShown: false }}
             />
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfile}
+              options={{ headerShown: false }}
+            />
           </>
         ) : (
           <>
+             <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen
               name="SignUp"
               component={Signup}

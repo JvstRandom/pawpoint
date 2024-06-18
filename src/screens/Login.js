@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, TextInput, KeyboardAvoidingView } from "react-native";
 import { supabase } from "../../lib/supabase";
 import { Input } from 'react-native-elements';
 
@@ -38,7 +38,7 @@ const Login = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView behavior="padding" style={styles.container}>
 
             {/* SAMBUTAN */}
             <View style={[styles.sambutan, styles.shadowProp, styles.borderProp]}>
@@ -51,24 +51,20 @@ const Login = ({ navigation }) => {
             </View>
 
             <View style={styles.formContainer}>
-                <Input
-                    
-                    label="Email"
-                    leftIcon={{ type: "font-awesome", name: "envelope" }}
+            <TextInput
+                    style={styles.form1}
+                    placeholder="Masukkan email Anda..."
                     onChangeText={(text) => setEmail(text)}
                     value={email}
-                    placeholder="Masukkan email Anda..."
                     autoCapitalize={"none"}
                 />
-                <Input
-                    
-                    label="Password"
-                    leftIcon={{ type: "font-awesome", name: "lock" }}
+                <TextInput
+                    style={styles.form2}
+                    placeholder="Masukkan password Anda..."
                     onChangeText={(text) => setPassword(text)}
                     value={password}
                     secureTextEntry={true}
                     autoCapitalize={"none"}
-                    placeholder="Masukkan password Anda..."
                 />
                 <TouchableOpacity style={styles.Button} onPress={signInWithEmail} disabled={loading}>
                     <Text style={styles.ButtonText}>Login Sekarang</Text>
@@ -82,7 +78,7 @@ const Login = ({ navigation }) => {
                 </Text>
             </View>
 
-        </View>
+        </KeyboardAvoidingView>
     );
 };
 

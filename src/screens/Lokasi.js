@@ -17,10 +17,10 @@ class Home extends Component {
                     <TouchableOpacity style={styles.iconNavt4} onPress={() => this.props.navigation.navigate('Profile')}>
                         <Image style={styles.iconNav} source={require('./icon/pump-medical-solid.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, { backgroundColor: '#F9F5EC' }]} onPress={() => this.props.navigation.navigate('Home')}>
+                    <TouchableOpacity style={styles.iconNavt4} onPress={() => this.props.navigation.navigate('Home')}>
                         <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconNavt4} onPress={() => this.props.navigation.navigate('Upload')}>
+                    <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, { backgroundColor: '#F9F5EC' }]} onPress={() => this.props.navigation.navigate('Upload')}>
                         <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
                     </TouchableOpacity>
                 </View>
