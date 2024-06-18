@@ -188,16 +188,16 @@ class Upload extends React.Component {
                     <TouchableOpacity style={styles.iconNavt4} onPress={() => this.props.navigation.navigate('Home')}>
                         <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, { backgroundColor: '#F9F5EC' }]} onPress={() => this.props.navigation.navigate('Konsul')}>
-                        <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
-                    </TouchableOpacity>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.form1} onPress={this.pickImage}>
+                    <TouchableOpacity style={[styles.form1, {display: 'flex', alignItems: 'center', justifyContent: 'center'}]} onPress={this.pickImage}>
+                        
                         {image ? (
                             <Image source={{ uri: image }} style={styles.image} />
                         ) : (
-                            <Text>Upload Foto Anda</Text>
+                            <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                                <Text style={{textAlign: "center"}}>Upload Foto Anda</Text>
+                            </View>
                         )}
                     </TouchableOpacity>
 
@@ -304,9 +304,12 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 140,
         borderRadius: 15,
-        display:'flex',
-        alignItems: 'center',
-        marginTop: 3
+    },
+    kotakPengisiKonten: {
+        backgroundColor: '#F1C654',
+        borderRadius: 18,
+        paddingVertical: 4,
+        paddingHorizontal: 10
     },
     form1: { 
         borderWidth: 2,

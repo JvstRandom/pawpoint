@@ -105,9 +105,6 @@ class Home extends Component {
                     <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, {backgroundColor: '#F9F5EC'}]} onPress={ () => this.props.navigation.navigate('Home')}>
                         <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Lokasi')}>
-                        <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
-                    </TouchableOpacity>
                 </View>
 
                 {/* Scrollable Content */}
@@ -136,7 +133,7 @@ class Home extends Component {
                             </View>
 
                             <TouchableOpacity style={[styles.borderProp, styles.comment]} onPress={() => this.toggleCommentsModal(post.id)}>
-                                <Text>Add a comment..</Text>
+                                <Text>Tambahkan Komentar..</Text>
                             </TouchableOpacity>
 
                             {/* Type Tag and Location */}
@@ -144,11 +141,11 @@ class Home extends Component {
                                 <View style={styles.kotakPengisiKonten}>
                                     <Text>{post.type_tag}</Text>
                                 </View>
-                                <View style={[styles.kotakPengisiKonten, { backgroundColor: '#8FB6F1' }]}>
+                                <TouchableOpacity style={[styles.kotakPengisiKonten, { backgroundColor: '#8FB6F1' }]} onPress={() => this.props.navigation.navigate('Lokasi', { locationId: post.locations.id })}>
                                     {post.locations && (
                                         <Text>{post.locations.name}</Text>
                                     )}
-                                </View>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     ))}
@@ -171,16 +168,16 @@ class Home extends Component {
                             </ScrollView>
                             <TextInput
                                 style={styles.input}
-                                placeholder="Type your comment here..."
+                                placeholder="Ketik komen anda disini..."
                                 value={newComment}
                                 onChangeText={this.handleCommentChange}
                             />
                             <View style={{ display: "flex", flexDirection: "row", justifyContent: 'space-between' }}>
                                 <TouchableOpacity style={[styles.kotakPengisiKonten, { backgroundColor: '#8FB6F1', margin: 4, padding: 9 }]} onPress={this.addComment}>
-                                    <Text style={styles.buttonText}>Add Comment</Text>
+                                    <Text style={styles.buttonText}>Post</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={[styles.kotakPengisiKonten, { backgroundColor: '#F47356', margin: 4, padding: 9, borderRadius: 9 }]} onPress={() => this.toggleCommentsModal()}>
-                                    <Text style={[styles.buttonText, { fontSize: 20 }]}>X</Text>
+                                <TouchableOpacity style={[styles.kotakPengisiKonten, { backgroundColor: '#F47356', margin: 4, padding: 9, borderRadius: 20 }]} onPress={() => this.toggleCommentsModal()}>
+                                    <Text style={[styles.buttonText,]}>Exit</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

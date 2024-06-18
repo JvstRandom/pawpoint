@@ -134,9 +134,6 @@ export default function Profile({ session, navigation }: ProfileProps) {
         <TouchableOpacity style={[styles.iconNavt4]} onPress={() => navigation.navigate('Home')}>
           <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconNavt4} onPress={() => navigation.navigate('Konsul')}>
-          <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
-        </TouchableOpacity>
       </View>
 
       <View style={{ marginTop: 80, alignItems: 'center' }}>

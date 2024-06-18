@@ -1,11 +1,49 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView, Dimensions, TextInput } from "react-native";
+import { View, Text, ScrollView, Image, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import { supabase } from "../../lib/supabase";
 
-class Home extends Component {
+class Lokasi extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            locationId: props.route.params.locationId,
+            locationName: '',
+            posts: [],
+        };
     }
+
+    componentDidMount() {
+        this.fetchLocationName();
+        this.fetchPosts();
+    }
+
+    fetchLocationName = async () => {
+        const { data, error } = await supabase
+            .from('locations')
+            .select('name')
+            .eq('id', this.state.locationId)
+            .single();
+
+        if (data) {
+            this.setState({ locationName: data.name });
+        } else {
+            console.error(error);
+        }
+    };
+
+    fetchPosts = async () => {
+        const { data, error } = await supabase
+            .from('posts')
+            .select(`*, profiles:user_id (id, username, avatar_url)`)
+            .eq('location_id', this.state.locationId)
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error(error);
+        } else {
+            this.setState({ posts: data });
+        }
+    };
 
     render() {
         const screenWidth = Dimensions.get('window').width;
@@ -20,56 +58,21 @@ class Home extends Component {
                     <TouchableOpacity style={styles.iconNavt4} onPress={() => this.props.navigation.navigate('Home')}>
                         <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, { backgroundColor: '#F9F5EC' }]} onPress={() => this.props.navigation.navigate('Upload')}>
-                        <Image style={styles.iconNav} source={require('./icon/clipboard-regular.png')} />
-                    </TouchableOpacity>
                 </View>
 
-                {/* Scrollable Content */}
                 <ScrollView style={{ marginHorizontal: 22 }} showsVerticalScrollIndicator={false}>
-                    {/* POST */}
                     <View style={[styles.kotakPengisiKonten, styles.borderProp, { paddingHorizontal: 16, borderWidth: 0 }]}>
-                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Pantai Suramadu, Surabaya</Text>
-                    </View>
-                    <View style={[styles.post, styles.shadowProp, styles.borderProp]}>
-                        <View style={styles.texttime}>
-                            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>10:30</Text>
-                            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>21 Juni 2024</Text>
-                        </View>
-
-                        <Image source={require('../asset/dogdipantai.jpeg')} style={{ width: screenWidth - 85, height: 200, borderRadius: 12, marginBottom: 20 }}></Image>
+                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{this.state.locationName}</Text>
                     </View>
 
-                    <View style={[styles.t4fitur, styles.borderKomen, { justifyContent: 'space-evenly', marginTop: 12 }]}>
-                        <Image source={require('../asset/dogdipantai.jpeg')} style={{ width: screenWidth / 8, height: screenWidth / 8, borderRadius: 50 }} />
-                        <View>
-                            <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 2 }}>DogLovers</Text>
-                            <Text>"Wah bagus sekali, lain kali saya akan kesana"</Text>
+                    {/* Display posts related to this location */}
+                    {this.state.posts.map((post) => (
+                        <View key={post.id} style={[styles.post, styles.shadowProp, styles.borderProp]}>
+                            <Image source={{ uri: post.photo_url }} style={{ width: screenWidth - 85, height: 200, borderRadius: 12, marginBottom: 20 }} />
+                            <Text>{post.caption}</Text>
+                            <Text>Posted by : {post.profiles.username}</Text>
                         </View>
-                    </View>
-                    <View>
-                        <TextInput
-                            style={[styles.borderKomen, { paddingHorizontal: 16 }]}
-                            placeholder="Tambahkan komentar"
-                        />
-                    </View>
-                    <View>
-                        <View style={[styles.kotakPengisiKonten, styles.borderProp, { marginTop: 30, marginRight: 200, backgroundColor: '#F1C654' }]}>
-                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Post Terkait</Text>
-                        </View>
-                    </View>
-
-                    {/* Terkait Posts */}
-                    <View style={styles.t4Post}>
-                        <View style={[styles.relatedPost, styles.borderProp]}>
-                            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>21 Juni 2024 / 10:30</Text>
-                            <Image source={require('../asset/dogdipantai.jpeg')} style={styles.relatedImage}></Image>
-                        </View>
-                        <View style={[styles.relatedPost, styles.borderProp]}>
-                            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>21 Juni 2024 / 10:30</Text>
-                            <Image source={require('../asset/dogdipantai.jpeg')} style={styles.relatedImage}></Image>
-                        </View>
-                    </View>
+                    ))}
                 </ScrollView>
             </View>
         );
@@ -171,4 +174,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Home;
+export default Lokasi;
