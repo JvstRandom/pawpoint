@@ -65,6 +65,11 @@ function App() {
               component={EditProfile}
               options={{ headerShown: false }}
             />
+            <Stack.Screen
+              name="SignUp"
+              component={Signup}
+              options={{ headerShown: false }}
+            />
           </>
         ) : (
           <>
