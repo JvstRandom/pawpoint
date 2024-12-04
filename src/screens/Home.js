@@ -42,14 +42,19 @@ class Home extends Component {
     fetchComments = async (postId) => {
         const { data: comments, error } = await supabase
             .from('comments')
-            .select(`*, profiles:user_id (id, username, avatar_url)`)
+            .select(`
+                *,
+                profiles:user_id (id, username, avatar_url)
+            `)
             .eq('post_id', postId);
+    
         if (error) {
-            console.error(error);
+            console.error("Error fetching comments:", error.message);
         } else {
+            console.log("Fetched comments:", comments); // Debug log
             this.setState({ comments, commentsModalVisible: true });
         }
-    };
+    };    
     
     toggleCommentsModal = (postId = null) => {
         if (postId) {
@@ -100,10 +105,13 @@ class Home extends Component {
                 {/* Sticky Navbar */}
                 <View style={[styles.navbar, styles.shadowProp, styles.borderProp]}>
                     <TouchableOpacity style={styles.iconNavt4} onPress={ () => this.props.navigation.navigate('Profile')}>
-                        <Image style={styles.iconNav} source={require('./icon/pump-medical-solid.png')} />
+                        <Image style={styles.iconNav} source={require('./icon/user-solid.png')} />
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, {backgroundColor: '#F9F5EC'}]} onPress={ () => this.props.navigation.navigate('Home')}>
                         <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.refreshButton, styles.borderProp]} onPress={this.fetchPosts}>
+                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Refresh</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -163,7 +171,9 @@ class Home extends Component {
                             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                                 <Text style={styles.modalText}>Comments</Text>
                                 {comments.map((comment, index) => (
-                                    <Text key={index} style={styles.scrollText}>{comment.profiles.username} : {comment.content}</Text>
+                                    <Text key={index} style={styles.scrollText}>
+                                        {comment.profiles?.username || "Unknown"}: {comment.content}
+                                    </Text>
                                 ))}
                             </ScrollView>
                             <TextInput
@@ -213,6 +223,13 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderWidth: 2,
         borderRadius: 20,
+    },
+    refreshButton: {
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        backgroundColor: '#F1C654',
+        borderRadius: 20,
+        marginHorizontal: 5,
     },
     texttime: {
         flexDirection: 'row',
