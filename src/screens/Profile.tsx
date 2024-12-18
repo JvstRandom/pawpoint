@@ -122,6 +122,21 @@ export default function Profile({ session, navigation }: ProfileProps) {
     }
   }
 
+  async function handleLogout() {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        throw error;
+      }
+      Alert.alert('Logged out successfully');
+      navigation.navigate('Login'); // Navigate to login screen after logout
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+    }
+  }
+
   const screenWidth = Dimensions.get('window').width;
 
   return (
@@ -129,7 +144,7 @@ export default function Profile({ session, navigation }: ProfileProps) {
       {/* Sticky Navbar */}
       <View style={[styles.navbar, styles.shadowProp, styles.borderProp]}>
         <TouchableOpacity style={[styles.iconNavt4, styles.borderProp, { backgroundColor: '#F9F5EC' }]} onPress={() => navigation.navigate('Daycare')}>
-          <Image style={styles.iconNav} source={require('./icon/pump-medical-solid.png')} />
+          <Image style={styles.iconNav} source={require('./icon/user-solid.png')} />
         </TouchableOpacity>
         <TouchableOpacity style={[styles.iconNavt4]} onPress={() => navigation.navigate('Home')}>
           <Image style={styles.iconNav} source={require('./icon/house-solid.png')} />
@@ -152,7 +167,11 @@ export default function Profile({ session, navigation }: ProfileProps) {
           <TouchableOpacity style={[styles.kotakPengisiKonten, styles.borderProp, { paddingHorizontal: 16, backgroundColor: "#F47356" }]} onPress={() => navigation.navigate('EditProfile', { userId: session.user.id })}>
             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Edit Profile</Text>
           </TouchableOpacity>
+          
         </View>
+        <TouchableOpacity style={[styles.kotakPengisiKonten, styles.borderProp, { paddingHorizontal: 16, backgroundColor: "#D9534F", marginTop: 15}]} onPress={handleLogout}>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#FFF' }}>Log Out</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Scrollable Content */}
